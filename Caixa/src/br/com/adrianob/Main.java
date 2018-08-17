@@ -1,8 +1,10 @@
 package br.com.adrianob;
 
 import br.com.adrianob.dao.CaixaDao;
+import br.com.adrianob.model.Caixa;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -26,6 +28,23 @@ public class Main {
                             config
                     );
             
+            CaixaDao cd 
+                    = new CaixaDao((com.mysql.jdbc.Connection) conn);
+            cd.createTable();
+            
+            Caixa c = new Caixa();
+            c.setSaldoInicial(100);
+            
+            cd.salvar(c);
+            
+            c.setEntradas(50);
+            
+            cd.salvar(c);
+            
+            Caixa caixa = cd.getCaixa(new Date());
+            System.out.println(caixa.getData());
+            System.out.println(caixa.getSaldoInicial());
+            System.out.println(caixa.getStatus());
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
