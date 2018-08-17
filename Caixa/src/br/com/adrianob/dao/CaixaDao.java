@@ -28,12 +28,39 @@ public class CaixaDao {
 
     
     public void salvar(Caixa c) {
+        Caixa caixa = this.getCaixa(c.getData());
+        String sql = "update tbl_caixa set saldoinicial = ?, "
+                + " entradas = ?, saidas = ?, saldofinal = ?, "
+                + " status = ? "
+                + " where data = ?";
+        if (caixa == null) {
+            sql = "insert into tbl_caixa (saldoinicial, "
+                    + "entradas, saidas, saldofinal, status, "
+                    + "data) values (?,?,?,?,?,? )";
+        }
+        try {
+            PreparedStatement ps 
+                    = this.cnx.prepareStatement(sql);
+            ps.setDouble(1, c.getSaldoInicial());
+            ps.setDouble(2, c.getEntradas());
+            ps.setDouble(3, c.getSaidas());
+            ps.setDouble(4, c.getSaldoFinal());
+            ps.setString(5, c.getStatus().name());
+            ps.setString(6, sdf.format(c.getData()));
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
         
     }
     public void remover(Caixa c) {
         String sql = "delete from tbl_caixa where data = ?";
         try {
-            this.cnx.prepareStatement(sql);
+           PreparedStatement ps =
+                   this.cnx.prepareStatement(sql);
+           ps.setString(1, sdf.format(c.getData()));
+           ps.executeUpdate();
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
