@@ -31,11 +31,16 @@ public class CaixaDao {
         
     }
     public void remover(Caixa c) {
-        
+        String sql = "delete from tbl_caixa where data = ?";
+        try {
+            this.cnx.prepareStatement(sql);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-    public ArrayList<Caixa> getAll() {
+    public ArrayList<Caixa> getAll(String where) {
         ArrayList<Caixa> lista = new ArrayList<>();
-        String sql = "select * from tbl_caixa ";
+        String sql = "select * from tbl_caixa "+where;
         try {
             PreparedStatement ps 
                     = this.cnx.prepareStatement(sql);
@@ -60,7 +65,11 @@ public class CaixaDao {
     }
     
     public Caixa getCaixa(Date data) {
-        
+        String dt = sdf.format(data);
+        ArrayList<Caixa> all = this.getAll("where data = '"+dt+"'");
+        if (!all.isEmpty()) {
+            return all.get(0);
+        }
         return null;
     }
     
