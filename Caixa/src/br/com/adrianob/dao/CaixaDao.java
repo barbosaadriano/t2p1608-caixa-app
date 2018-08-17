@@ -100,4 +100,21 @@ public class CaixaDao {
         return null;
     }
     
+    public void createTable(){
+        String sql = "CREATE TABLE IF NOT EXISTS tbl_caixa "
+                + " ( data date not null primary key, "
+                + " saldoinicial numeric(13,2),"
+                + " entradas numeric(13,2),"
+                + " saidas numeric(13,2),"
+                + " saldofinal numeric(13,2),"
+                + " status varchar(7) )";
+        try {
+            PreparedStatement ps =
+            this.cnx.prepareStatement(sql);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
 }
