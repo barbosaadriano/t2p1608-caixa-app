@@ -7,7 +7,7 @@ import java.util.Date;
  * @author drink
  */
 public class Caixa {
-    
+
     private Date data;
     private double saldoInicial;
     private double entradas;
@@ -19,11 +19,13 @@ public class Caixa {
         data = new Date();
         status = Caixa.StatusCaixa.ABERTO;
     }
-    
-    
-    
+
+    public void calculaSaldo() {
+        this.saldoFinal = this.saldoInicial + this.entradas - this.saidas;
+    }
+
     public enum StatusCaixa {
-        ABERTO,FECHADO;
+        ABERTO, FECHADO;
     }
 
     public Date getData() {
@@ -73,7 +75,5 @@ public class Caixa {
     public void setStatus(StatusCaixa status) {
         this.status = status;
     }
-    
-    
-    
+
 }
