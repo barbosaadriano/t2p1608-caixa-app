@@ -1,10 +1,10 @@
 # t2p1608-caixa-app
 ##construindo uma aplicação em camadas com o java
 # Passos
-- Projeto
-- Model
-- Dao
--   Connection
+- Projeto - Ok
+- Model - OK
+- Dao - OK
+- Connection - ok
 - Views
 - Controllers
 # esquema
