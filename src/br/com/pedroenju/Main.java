@@ -1,15 +1,22 @@
 package br.com.pedroenju;
 
 import br.com.pedroenju.dao.CaixaDao;
-import br.com.pedroenju.model.Caixa;
+import br.com.pedroenju.view.CaixaTableModel;
+import br.com.pedroenju.view.ListViewCaixa;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Date;
 import java.util.Properties;
 
-public class Main {
+public class Main implements ActionListener {
 
     public static void main(String[] args) {
+        new Main().rodar();
+    }
+
+    public void rodar() {
+
         Properties config = new Properties();
         config.put("user", "root");
         config.put("password", "enju");
@@ -22,25 +29,22 @@ public class Main {
                     );
             CaixaDao cd = new CaixaDao((com.mysql.jdbc.Connection) conn);
             cd.createtable();
+
+            ListViewCaixa lvc = new ListViewCaixa(this);
             
-            Caixa c = new Caixa();
-            c.setSaldoInicial(100);
+            CaixaTableModel ctm = new CaixaTableModel(cd.getAll(""));
             
-            cd.salvar(c);
-            
-            c.setEntradas(50);
-            
-            cd.salvar(c);
-            
-            Caixa caixa = cd.getCaixa(new Date());
-            
-            System.out.println(caixa.getData());
-            System.out.println(caixa.getSaldoInicial());
-            System.out.println(caixa.getStatus());
+            lvc.getTabela().setModel(ctm);
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
     }
 
 }
