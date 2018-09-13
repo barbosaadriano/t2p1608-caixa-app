@@ -62,7 +62,7 @@ public class ListViewCaixa extends JFrame {
         this.tabela = new JTable();
         this.scroll = new JScrollPane(this.tabela);
 
-        this.add(this.scroll, BorderLayout.SOUTH);
+        this.add(this.scroll, BorderLayout.CENTER);
     }
 
     private void telaShow() {

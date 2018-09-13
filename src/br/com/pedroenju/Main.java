@@ -1,7 +1,9 @@
 package br.com.pedroenju;
 
 import br.com.pedroenju.dao.CaixaDao;
+import br.com.pedroenju.model.Caixa;
 import br.com.pedroenju.view.CaixaTableModel;
+import br.com.pedroenju.view.EditViewCaixa;
 import br.com.pedroenju.view.ListViewCaixa;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,15 +29,23 @@ public class Main implements ActionListener {
                             "jdbc:mysql://localhost:3306/singleton",
                             config
                     );
-            CaixaDao cd = new CaixaDao((com.mysql.jdbc.Connection) conn);
-            cd.createtable();
+//            CaixaDao cd = new CaixaDao((com.mysql.jdbc.Connection) conn);
+//            cd.createtable();
+//
+//            ListViewCaixa lvc = new ListViewCaixa(this);
+//            
+//            CaixaTableModel ctm = new CaixaTableModel(cd.getAll(""));
+//            
+//            lvc.getTabela().setModel(ctm);
 
-            ListViewCaixa lvc = new ListViewCaixa(this);
-            
-            CaixaTableModel ctm = new CaixaTableModel(cd.getAll(""));
-            
-            lvc.getTabela().setModel(ctm);
-            
+            EditViewCaixa edv = new EditViewCaixa(this);
+
+            Caixa c = new Caixa();
+    
+            edv.setCaixa(c);
+
+            System.out.println(edv.getCaixa());
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -44,7 +54,7 @@ public class Main implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        System.out.println(e.getActionCommand());
     }
 
 }
