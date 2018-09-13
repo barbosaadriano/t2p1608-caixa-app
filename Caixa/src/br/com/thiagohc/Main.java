@@ -7,21 +7,32 @@ package br.com.thiagohc;
 
 import br.com.thiagohc.dao.CaixaDao;
 import br.com.thiagohc.model.Caixa;
+import br.com.thiagohc.view.CaixaEdicao;
+import br.com.thiagohc.view.CaixaTableModel;
+import br.com.thiagohc.view.ListViewCaixa;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
  *
  * @author thiag
  */
-public class Main {
+public class Main implements ActionListener {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        new Main().rodar();
+
+    }
+
+    public void rodar() {
         Properties config = new Properties();
         config.put("user", "root");
         config.put("password", "root");
@@ -33,25 +44,30 @@ public class Main {
                             config
                     );
             CaixaDao cd = new CaixaDao((com.mysql.jdbc.Connection) conn);
-            cd.createTable();
+
+            ListViewCaixa lvc = new ListViewCaixa(this);
+            lvc.setVisible(true);
             
-            Caixa c = new Caixa();
-            c.setSaldoInicial(100);
+            CaixaTableModel meuModel = new CaixaTableModel(cd.getAll(""));
             
-            cd.salvar(c);
+            lvc.getListadecaixa().setModel(meuModel);
             
-            c.setEntradas(50);
+            CaixaEdicao ce = new CaixaEdicao();
+            ce.setVisible(true);
+            ArrayList<Caixa> all = cd.getAll("");
+            ce.setCx(all.get(1));
             
-            cd.salvar(c);
-            
-            Caixa caixa = cd.getCaixa(new Date());
-            System.out.println(caixa.getData());
-            System.out.println(caixa.getSaldoFinal());
-            System.out.println(caixa.getStatus());
-       
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+    }
+
     
 }
+
