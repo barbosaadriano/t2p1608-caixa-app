@@ -1,5 +1,5 @@
 
-package br.com.adrianob.view;
+package br.com.nicolasg.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

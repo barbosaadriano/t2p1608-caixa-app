@@ -1,7 +1,7 @@
 
-package br.com.adrianob.dao;
+package br.com.nicolasg.dao;
 
-import br.com.adrianob.model.Caixa;
+import br.com.nicolasg.model.Caixa;
 import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

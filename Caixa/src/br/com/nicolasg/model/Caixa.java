@@ -1,4 +1,4 @@
-package br.com.adrianob.model;
+package br.com.nicolasg.model;
 
 import java.util.Date;
 

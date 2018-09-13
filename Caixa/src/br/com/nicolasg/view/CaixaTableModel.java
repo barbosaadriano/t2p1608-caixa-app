@@ -1,7 +1,7 @@
 
-package br.com.adrianob.view;
+package br.com.nicolasg.view;
 
-import br.com.adrianob.model.Caixa;
+import br.com.nicolasg.model.Caixa;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
