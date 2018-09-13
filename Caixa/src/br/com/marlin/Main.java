@@ -1,20 +1,25 @@
-
 package br.com.marlin;
 
 // @author Marlon
-
 import br.com.marlin.dao.CaixaDao;
-import br.com.marlin.model.Caixa;
+import br.com.marlin.view.CaixaEdicao;
+import br.com.marlin.view.CaixaTableModel;
+import br.com.marlin.view.ListViewCaixa;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Properties;
 
-
-public class Main {
+public class Main implements ActionListener {
 
     public static void main(String[] args) {
+
+        new Main().rodar();
+    }
+
+    public void rodar() {
         Properties config = new Properties();
         config.put("user", "root");
         config.put("password", "");
@@ -24,27 +29,21 @@ public class Main {
                     "jdbc:mysql://localhost:3306/singleton",
                     config
             );
-            
+
             CaixaDao cd = new CaixaDao((com.mysql.jdbc.Connection) conn);
-            cd.createTable();
-            
-            Caixa c = new Caixa();
-            c.setSaldoInicial(100);
-            
-            cd.salvar(c);
-            
-            c.setEntradas(50);
-            
-            cd.salvar(c);
-            
-            Caixa caixa = cd.getCaixa(new Date());
-            System.out.println(caixa.getData());
-            System.out.println(caixa.getSaldoInicial());
-            System.out.println(caixa.getStatus());
-            
-            
-       } catch (ClassNotFoundException | SQLException e) {
-        System.out.println("Erro: " +e.getMessage());
+            ListViewCaixa lvc = new ListViewCaixa(this);
+            CaixaEdicao ce = new CaixaEdicao(this);
+            CaixaTableModel ctm = new CaixaTableModel(cd.getAll(""));
+            lvc.getTabela().setModel(ctm);
+
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-}
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }
