@@ -1,13 +1,15 @@
-package br.com.adrianob;
+package br.com.nicolas;
 
-import br.com.adrianob.dao.CaixaDao;
-import br.com.adrianob.view.CaixaTableModel;
-import br.com.adrianob.view.ListViewCaixa;
+import br.com.nicolasg.dao.CaixaDao;
+import br.com.nicolasg.view.CaixaTableModel;
+import br.com.nicolasg.view.ListViewCaixa;
+import br.com.nicolasg.view.TelaCaixa;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -20,12 +22,13 @@ public class Main implements ActionListener {
      */
     public static void main(String[] args) {
        new Main().rodar();
+       
     }
     
     public void rodar(){
-         Properties config = new Properties();
-        config.put("user", "devel");
-        config.put("password", "developer");
+        Properties config = new Properties();
+        config.put("user", "root");
+        config.put("password", "");
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn
@@ -42,8 +45,7 @@ public class Main implements ActionListener {
             
             CaixaTableModel meuModel = new CaixaTableModel(cd.getAll(""));
                         
-            lvc.getTabela().setModel(meuModel);
-            
+            lvc.getTabela().setModel(meuModel);            
             
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -1,22 +1,28 @@
-
 package br.com.nicolasg.model;
 
 import java.util.Date;
 
+/**
+ *
+ * @author drink
+ */
 public class Caixa {
+    
     private Date data;
     private double saldoInicial;
     private double entradas;
     private double saidas;
     private double saldoFinal;
     private StatusCaixa status;
-    
-    public Caixa(){
+
+    public Caixa() {
         data = new Date();
         status = Caixa.StatusCaixa.ABERTO;
     }
     
-    public enum StatusCaixa{
+    
+    
+    public enum StatusCaixa {
         ABERTO,FECHADO;
     }
 
