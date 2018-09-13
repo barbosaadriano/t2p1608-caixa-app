@@ -1,4 +1,4 @@
-//todo objeto tem um modelo
+
 package br.com.erica.model;
 
 import java.util.Date;

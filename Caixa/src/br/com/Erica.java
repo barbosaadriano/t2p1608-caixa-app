@@ -3,19 +3,45 @@ package br.com;
 
 import br.com.erica.dao.CaixaDao;
 import br.com.erica.model.Caixas;
+import br.com.erica.view.CaixaEdView;
+import br.com.erica.view.CaixaTableModel;
+import br.com.erica.view.ListViewCaixa;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Date;
 import java.util.Properties;
+import javax.swing.text.html.ListView;
 
 /**
  *
  * @author Erica
  */
-public class Erica {
+public class Erica implements ActionListener{
 
     public static void main(String[] args) {
-        Properties config = new Properties();
+        
+              new Erica().rodar();
+              
+              Caixas c = new Caixas();
+              c.setSaldoInicial(20);
+              c.setEntradas(90);
+              c.setSaidas(7);
+              c.setSaldoFinal(6);
+              c.setStatus(Caixas.StatusCaixa.ABERTO);
+              
+              CaixaEdView cev = new CaixaEdView(); 
+              cev.setVisible(true);
+              cev.setLocationRelativeTo(null); 
+              cev.setC(c);
+              
+         
+              
+    }
+    
+    public void rodar(){
+      Properties config = new Properties();
         config.put("user", "root");
         config.put("password", "root");
         try {
@@ -26,23 +52,22 @@ public class Erica {
                             config
                     );
             CaixaDao cd = new CaixaDao((com.mysql.jdbc.Connection) conn);
-            cd.createTable();
+         
+            ListViewCaixa lvc = new ListViewCaixa(this);
+            lvc.setVisible(true);
             
-            Caixas c = new Caixas();
-            c.setSaldoInicial(100);
-            cd.salvar(c);
+            CaixaTableModel meuModel = new CaixaTableModel(cd.getAll(""));
             
-            c.setEntradas(50);
-            cd.salvar(c);
+            lvc.getTabel().setModel(meuModel);
             
-            Caixas caixa = cd.getCaixas(new Date());
-            System.out.println(caixa.getData());
-            System.out.println(caixa.getSaldoInicial());
-            System.out.println(caixa.getStatus());
-                   
-        } catch (Exception e) {
+        }catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        
+    }
+   
     
 }
