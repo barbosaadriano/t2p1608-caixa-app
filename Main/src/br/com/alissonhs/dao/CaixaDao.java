@@ -28,15 +28,14 @@ public class CaixaDao {
     public CaixaDao(Connection cnx) {
         this.cnx = cnx;
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
-               System.out.println("OPA!");
     }
-    public void Salvar(Caixa c){
+
+    public void Salvar(Caixa c) {
         Caixa caixa = this.getCaixa(c.getDate());
-        String sql = "update tbl_caixa set saldoincial = ?, entradas = ?, saidas = ?, saldofinal = ?, status = ?, where data = ?";
+        String sql = "update tbl_caixa set saldoinicial = ?, entradas = ?, saidas = ?, saldofinal = ?, status = ? where data = ?";
         if (caixa == null) {
-          sql = "insert into tbl_caixa (saldoincial, entradas, saidas, saldofinal, status, data) values (?,?,?,?,?,?)";
-                 System.out.println("OPA!");
-            
+            sql = "insert into tbl_caixa (saldoinicial, entradas, saidas, saldofinal, status, data) values (?,?,?,?,?,?)";
+
         }
         try {
             PreparedStatement ps = this.cnx.prepareStatement(sql);
@@ -48,12 +47,12 @@ public class CaixaDao {
             ps.setString(6, sdf.format(c.getDate()));
             ps.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("[[ "+ex.getMessage());
         }
-           System.out.println("OPA!");
+        //System.out.println(caixa);
     }
-    
-    public void Remover (Caixa c) {
+
+    public void Remover(Caixa c) {
         String sql = "delete from tbl_caixa where data = ?";
         try {
             PreparedStatement ps = this.cnx.prepareStatement(sql);
@@ -62,48 +61,45 @@ public class CaixaDao {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-            
-}
+
+    }
+
     public ArrayList<Caixa> getAll(String where) {
-        ArrayList<Caixa> lista = new ArrayList<>() ;
+        ArrayList<Caixa> lista = new ArrayList<>();
         String sql = "select * from tbl_caixa " + where;
+        //System.out.println(sql);
         try {
             PreparedStatement ps = this.cnx.prepareStatement(sql);
-           ResultSet res =  ps.executeQuery();
-           while (res.next()){
-               Caixa c = new Caixa();
-               c.setDate(res.getDate("data"));
-               c.setSaldoInicial(res.getDouble("saldoinicial"));
-               c.setEntradas(res.getDouble("entradas"));
-               c.setSaidas(res.getDouble("saidas"));
-               c.setSaldoFinal(res.getDouble("saldofinal"));
-               String tmp = res.getString(sql);
-                      System.out.println("OPA!");
-               if(tmp.equals("Fechado")){
-                  c.setStatus(Caixa.statusCaixa.FECHADO);
-               }
-               lista.add(c);
-           }
-       System.out.println("OPA!");
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                Caixa c = new Caixa();
+                c.setDate(res.getDate("data"));
+                c.setSaldoInicial(res.getDouble("saldoinicial"));
+                c.setEntradas(res.getDouble("entradas"));
+                c.setSaidas(res.getDouble("saidas"));
+                c.setSaldoFinal(res.getDouble("saldofinal"));
+                String tmp = res.getString("status");
+                if (tmp.equals("Fechado")) {
+                    c.setStatus(Caixa.statusCaixa.FECHADO);
+                }
+                lista.add(c);
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());;
         }
-        
-           return lista;
+
+        return lista;
     }
 
-    
-    public Caixa getCaixa (Date Data){
+    public Caixa getCaixa(Date Data) {
         String dt = sdf.format(Data);
-        ArrayList<Caixa> all = this.getAll("Where data = '"+dt+"'");
-        if(!all.isEmpty()){
-                return all.get(0);
+        ArrayList<Caixa> all = this.getAll(" where `data` = '" + dt + "'");
+        if (!all.isEmpty()) {
+            return all.get(0);
         }
         return null;
     }
 
-    
-    
     public void createTable() {
         String sql = "create table if not exists tbl_caixa( "
                 + "data date not null primary key,"
@@ -112,10 +108,7 @@ public class CaixaDao {
                 + "saidas numeric (13,2),"
                 + "saldofinal numeric(13,2),"
                 + "status varchar (7))";
-        
-        
- 
-        
+
         try {
             PreparedStatement ps = this.cnx.prepareStatement(sql);
             ps.executeUpdate(sql);
@@ -123,5 +116,5 @@ public class CaixaDao {
             System.out.println(ex.getMessage());
         }
     }
-    
+
 }

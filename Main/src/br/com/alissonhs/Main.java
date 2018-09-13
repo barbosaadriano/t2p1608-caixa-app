@@ -6,7 +6,11 @@
 package br.com.alissonhs;
 
 import br.com.alissonhs.dao.CaixaDao;
+import br.com.alissonhs.view.CaixaTableModel;
+import br.com.alissonhs.view.ListViewCaixa;
 import br.com.caixa.Caixa;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Date;
@@ -16,10 +20,13 @@ import java.util.Properties;
  *
  * @author Alisson H. Silva
  */
-public class Main {
-    
+public class Main implements ActionListener {
+
     public static void main(String[] args) {
-        
+        new Main().Rodar();
+    }
+
+    public void Rodar() {
         Properties config = new Properties();
         config.put("user", "root");
         config.put("password", "root");
@@ -31,21 +38,19 @@ public class Main {
                             config
                     );
             CaixaDao cd = new CaixaDao((com.mysql.jdbc.Connection) conn);
-            cd.createTable();
-            Caixa c = new Caixa();
-            c.setSaldoInicial(100);
-            cd.Salvar(c);
-            c.setEntradas(50);
-            cd.Salvar(c);
-            cd.getCaixa(new Date());
-            Caixa caixa = cd.getCaixa(new Date());
-            System.out.println(caixa.getDate());
-            System.out.println(caixa.getSaldoInicial());
-            System.out.println(caixa.getStatus());
-            System.out.println(c);
+            ListViewCaixa lvc = new ListViewCaixa(this);
+            lvc.setVisible(true);
+
+            CaixaTableModel meuModel = new CaixaTableModel(cd.getAll(""));
+            lvc.getTbInfo().setModel(meuModel);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
 }

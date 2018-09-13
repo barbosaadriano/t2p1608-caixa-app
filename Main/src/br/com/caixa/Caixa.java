@@ -12,37 +12,38 @@ import java.util.Date;
  * @author Alisson H. Silva
  */
 public class Caixa {
-    private Date date;
-    private double saldoInicial;
+    private Date data;
+    private double SaldoInicial;
     private double entradas;
     private double saidas;
     private double saldoFinal;
     private statusCaixa status;
     
     public Caixa(){
-        date = new Date();
+        data = new Date();
         status = Caixa.statusCaixa.ABERTO;
         
     }
-    
+
+      
     public enum statusCaixa{
         ABERTO,FECHADO;
     }
 
     public Date getDate() {
-        return date;
+        return data;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.data = date;
     }
 
     public double getSaldoInicial() {
-        return saldoInicial;
+        return SaldoInicial;
     }
 
     public void setSaldoInicial(double saldoInicial) {
-        this.saldoInicial = saldoInicial;
+        this.SaldoInicial = saldoInicial;
     }
 
     public double getEntradas() {
