@@ -1,7 +1,12 @@
 package br.com.adrianob;
 
+import br.com.LunaIzahR.view.CaixaTableModel;
+import br.com.LunaIzahR.view.EditViewCaixa;
+import br.com.LunaIzahR.view.ListViewCaixa;
 import br.com.adrianob.dao.CaixaDao;
 import br.com.adrianob.model.Caixa;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Date;
@@ -11,45 +16,64 @@ import java.util.Properties;
  *
  * @author drink
  */
-public class Main {
+public class Main implements ActionListener {
 
-    /**
-     * @param args the command line arguments
-     */
+        
     public static void main(String[] args) {
-        Properties config = new Properties();
-        config.put("user", "devel");
-        config.put("password", "developer");
+      
+        new Main().rodar();
+        
+      
+        Caixa c = new Caixa(); 
+        
+        
+        EditViewCaixa evc = new EditViewCaixa(); 
+            evc.setVisible(true);
+            evc.setLocationRelativeTo(null);
+            evc.setC(c);
+            
+       
+        c.setSaldoInicial(58);
+        c.setEntradas(60);
+               
+    }
+    
+    public void rodar(){
+        
+          Properties config = new Properties();
+        config.put("user", "root");
+        config.put("password", "root");
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn
                     = DriverManager.getConnection(
-                            "jdbc:mysql://localhost:3306/singleton",
+                            "jdbc:mysql://localhost:3306/singletton",
                             config
                     );
             
             CaixaDao cd 
                     = new CaixaDao((com.mysql.jdbc.Connection) conn);
-            cd.createTable();
             
-            Caixa c = new Caixa();
-            c.setSaldoInicial(100);
+            ListViewCaixa lvc = new ListViewCaixa(this); 
+            lvc.setVisible(true);
+            lvc.setLocationRelativeTo(null);
             
-            cd.salvar(c);
             
-            c.setEntradas(50);
             
-            cd.salvar(c);
-            
-            Caixa caixa = cd.getCaixa(new Date());
-            System.out.println(caixa.getData());
-            System.out.println(caixa.getSaldoInicial());
-            System.out.println(caixa.getStatus());
+            CaixaTableModel meumodel = new CaixaTableModel(cd.getAll("")); 
+            lvc.getTabela().setModel(meumodel);
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        
+        
     }
 
 }
